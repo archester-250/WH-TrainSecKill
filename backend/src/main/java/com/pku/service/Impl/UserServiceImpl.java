@@ -29,4 +29,21 @@ public class UserServiceImpl implements UserService {
         userMapper.insertUser(user);
         return HttpStatus.ACCEPTED;
     }
+
+    @Override
+    public Integer loginUser(UserDTO userDTO) {
+        if(userDTO.getUsername() == null || userDTO.getPassword() == null || userDTO.getUsername().isEmpty() || userDTO.getPassword().isEmpty()) {
+            return -1; //账号或密码不能为空
+        }
+        List<User> users = userMapper.selectUserByUsername(userDTO.getUsername());
+        if (users.isEmpty()) {
+            return 0; //账号不存在
+        }
+        else if(users.get(0).getPassword().equals(userDTO.getPassword())) {
+            return 1;
+        }
+        else{
+            return 2; //密码错误
+        }
+    }
 }

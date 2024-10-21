@@ -6,4 +6,5 @@ import org.springframework.http.HttpStatus;
 
 public interface UserService {
     public HttpStatus registerUser(UserDTO userDTO);
+    public Integer loginUser(UserDTO userDTO);
 }
