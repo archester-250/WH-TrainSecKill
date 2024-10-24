@@ -1,7 +1,7 @@
 seckill:
   spring:
     datasource:
-      url: jdbc:mysql://localhost:3306/wh_seckill
+      url: jdbc:mysql://localhost:3306/seckill
       username: root
       password: wxl2001072312
   jwt:
