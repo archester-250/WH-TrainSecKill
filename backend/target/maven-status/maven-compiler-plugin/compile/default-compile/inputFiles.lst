@@ -1,1 +1,15 @@
-F:\OneDrive - bupt.edu.cn\other_files\研一\互联网开发与实践\WH-TrainSecKill\backend\src\main\java\com\pku\WH_SeckillApplication.java
+/usr/src/mymaven/src/main/java/com/pku/WH_SeckillApplication.java
+/usr/src/mymaven/src/main/java/com/pku/config/WebConfig.java
+/usr/src/mymaven/src/main/java/com/pku/config/WebMVCConfiguration.java
+/usr/src/mymaven/src/main/java/com/pku/constant/JwtClaimsConstant.java
+/usr/src/mymaven/src/main/java/com/pku/context/BaseContext.java
+/usr/src/mymaven/src/main/java/com/pku/controller/user/UserController.java
+/usr/src/mymaven/src/main/java/com/pku/interceptor/JWTUserInterceptor.java
+/usr/src/mymaven/src/main/java/com/pku/mapper/UserMapper.java
+/usr/src/mymaven/src/main/java/com/pku/pojo/dto/UserDTO.java
+/usr/src/mymaven/src/main/java/com/pku/pojo/entity/User.java
+/usr/src/mymaven/src/main/java/com/pku/pojo/vo/UserVO.java
+/usr/src/mymaven/src/main/java/com/pku/properties/JwtProperties.java
+/usr/src/mymaven/src/main/java/com/pku/service/Impl/UserServiceImpl.java
+/usr/src/mymaven/src/main/java/com/pku/service/UserService.java
+/usr/src/mymaven/src/main/java/com/pku/utils/JwtUtil.java
