@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { register } from '@/api/register'
 
 export default {
   data() {
@@ -28,28 +28,16 @@ export default {
     };
   },
   methods: {
-    async registerUser() {
-      console.log("Register button clicked");  // 检查点击是否触发
-      try {
-        const response = await axios.post('http://localhost:8080/user/user/register', this.form, {
-          headers:{
-            'Content-Type': 'application/json'
-          }
-        });
-        console.log(response);  // 检查是否有返回结果
-        if (response.status === 200) {
-          this.message = '注册成功！';
-          // this.$router.push('/login');
-        } else {
-          this.message = response.data.message || '注册失败，请重试。';
-        }
-      } catch (error) {
-        console.error('Error:', error);  // 捕获错误
-        this.message = '网络错误，请稍后再试。';
-      }
+    registerUser() {
+      register(this.form.username, this.form.password).then(response => {
+        console.log(response)
+        this.message = response
+      }).catch(error => {
+        console.error('获取数据失败:', error)
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>

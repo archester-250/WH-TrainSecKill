@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("/user")
+@RequestMapping("/user/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -24,6 +24,7 @@ public class UserController {
     private JwtProperties jwtProperties;
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
+        log.info("userDTO: " + userDTO);
         if(userService.registerUser(userDTO) == HttpStatus.ACCEPTED) return ResponseEntity.ok("注册成功！");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("用户名重复");
