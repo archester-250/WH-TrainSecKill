@@ -1,21 +1,3 @@
-<<<<<<< HEAD
-package com.pku.pojo.entity;
-
-import lombok.Builder;
-import lombok.Data;
-
-import java.time.LocalDateTime;
-
-@Data
-@Builder
-public class User {
-    private Long userId;
-    private String username;
-    private String password;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
-}
-=======
 package com.pku.pojo.entity;
 
 import lombok.AllArgsConstructor;
@@ -43,4 +25,3 @@ public class User {
     private Integer loginCount;
 }
 //User中的名字需于数据库一致，要不然会导致null返回值
->>>>>>> seckill

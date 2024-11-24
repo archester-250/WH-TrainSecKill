@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-package com.pku.pojo.dto;
-
-import lombok.Data;
-
-@Data
-public class UserDTO {
-    private String username;
-    private String password;
-}
-=======
 package com.pku.pojo.dto;
 
 import lombok.Data;
@@ -20,4 +9,3 @@ public class UserDTO {
     private String email;
     private String mobile;
 }
->>>>>>> seckill
