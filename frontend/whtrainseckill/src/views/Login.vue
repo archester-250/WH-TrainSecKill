@@ -86,7 +86,7 @@ export default {
         password: encryptedPassword
       };
       // 发送请求
-      this.$axios.post('/api/login', submitData)
+      this.$axios.post('/api/user/user/login', submitData)
         .then(response => {
           // 处理成功响应
         })

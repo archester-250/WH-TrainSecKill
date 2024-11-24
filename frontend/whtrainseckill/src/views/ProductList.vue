@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     fetchCategories() {
-    this.$axios.get('/api/categories')
+    this.$axios.get('/api/user/categories')
         .then(response => {
         if (response.data.code === 200) {
             this.categories = response.data.data;
@@ -113,7 +113,7 @@ export default {
         priceMin: this.priceRange.min,
         priceMax: this.priceRange.max
         };
-        this.$axios.get('/api/products', { params })
+        this.$axios.get('/api/user/products', { params })
         .then(response => {
             if (response.data.code === 200) {
             this.products = response.data.data.records;

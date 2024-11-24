@@ -19,6 +19,8 @@ RUN npm run build
 # 使用 Nginx 作为服务器
 FROM nginx:stable-alpine
 
+# 复制nginx.conf文件
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 # 复制构建的文件到 Nginx 默认目录
 COPY --from=build-stage /app/dist/ /usr/share/nginx/html
 

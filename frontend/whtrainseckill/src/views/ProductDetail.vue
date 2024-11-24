@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     fetchProductDetail() {
-      this.$axios.get(`/api/products/${this.productId}`)
+      this.$axios.get(`/api/user/products/${this.productId}`)
         .then(response => {
           if (response.data.code === 200) {
             this.product = response.data.data;
