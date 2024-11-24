@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pku.mapper.ProductMapper">
+    <select id="searchProducts">
+        select * from t_goods
+        <where>
+            <if test="keyword != null and keyword.trim() != ''">
+                AND name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="categoryId != null">
+--                 AND category_id = #{categoryId}
+            </if>
+            <if test="priceMin != null">
+                AND price >= #{priceMin}
+            </if>
+            <if test="priceMax != null">
+                AND price &lt;= #{priceMax}
+            </if>
+        </where>
+        limit #{offset}, #{pageSize}
+    </select>
+</mapper>

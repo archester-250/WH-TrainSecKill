@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 server:
   port: 28080
 spring:
@@ -24,4 +25,32 @@ mybatis:
   type-aliases-package: com.pku.pojo.entity
   configuration:
     #开启驼峰命名
+=======
+server:
+  port: 28080
+spring:
+  application:
+    name: WH_Seckill
+  datasource:
+    url: ${seckill.spring.datasource.url}
+    username: ${seckill.spring.datasource.username}
+    password: ${seckill.spring.datasource.password}
+  profiles:
+    active: dev
+
+logging:
+  level:
+    com:
+      pku:
+        mapper: debug
+        service: info
+        controller:
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.pku.pojo.entity
+  configuration:
+    #开启驼峰命名
+>>>>>>> seckill
     map-underscore-to-camel-case: true
