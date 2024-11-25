@@ -44,8 +44,8 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
         ]
-      }
-
+      },
+      publicKey: '' // 用于存储动态获取的公钥
     };
   },
   mounted() {
@@ -69,30 +69,70 @@ export default {
     },
     // 登录方法
     login() {
-      // 登录成功后
+      // 登录成功后存储或清除记住的用户名
       if (this.form.rememberMe) {
         localStorage.setItem('rememberedUsername', this.form.username);
       } else {
         localStorage.removeItem('rememberedUsername');
       }
-      // 后续处理
-      const encrypt = new JSEncrypt();
-      // 后端提供的公钥，需要在组件中获取或在请求时动态获取
-      encrypt.setPublicKey(this.publicKey);
-      const encryptedPassword = encrypt.encrypt(this.form.password);
-      // 准备提交的数据
-      const submitData = {
-        username: this.form.username,
-        password: encryptedPassword
-      };
-      // 发送请求
-      this.$axios.post('/api/user/user/login', submitData)
-        .then(response => {
-          // 处理成功响应
+
+      // 动态获取公钥并进行登录
+      this.getPublicKey()
+        .then(publicKey => {
+          const encrypt = new JSEncrypt();
+          encrypt.setPublicKey(publicKey);
+          const encryptedPassword = encrypt.encrypt(this.form.password);
+          const submitData = {
+            username: this.form.username,
+            password: encryptedPassword
+          };
+
+          // 发送登录请求
+          this.$axios.post('/api/user/user/login', submitData)
+            .then(response => {
+              // 假设后端返回的 token 在 response.data 中
+              const token = response.data;
+              if (token) {
+                // 存储 token 到 localStorage
+                localStorage.setItem('authToken', token);
+
+                // 提示用户登录成功
+                this.$message.success('登录成功！即将跳转到产品页面...');
+                
+                // 跳转到产品页面
+                setTimeout(() => {
+                  this.$router.push('/products'); // 假设目标页面为 /products
+                }, 1500);
+              } else {
+                this.$message.error('未接收到 token，登录失败！');
+              }
+            })
+            .catch(error => {
+              // 处理错误响应
+              console.error('登录失败', error);
+              this.$message.error('登录失败，请重试！');
+            });
         })
         .catch(error => {
-          // 处理错误响应
+          console.error('获取公钥失败', error);
         });
+    },
+
+    // 动态获取公钥
+    getPublicKey() {
+      return new Promise((resolve, reject) => {
+        this.$axios.get('/api/public-key')
+          .then(response => {
+            if (response.data && response.data.publicKey) {
+              resolve(response.data.publicKey);
+            } else {
+              reject(new Error('未获取到有效的公钥'));
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
     },
     resetForm() {
       this.$refs.loginForm.resetFields();

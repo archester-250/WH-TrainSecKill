@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
             return (long) -3; //手机号已注册
         }
         String salt = generateSalt();
+        log.info("salt.length: {}", salt.length());
         User user = User.builder()
                 .nickname(userDTO.getUsername())
                 .password(userDTO.getPassword())

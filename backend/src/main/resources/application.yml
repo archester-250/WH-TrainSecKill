@@ -17,6 +17,17 @@ logging:
         mapper: debug
         service: info
         controller:
+seckill:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: ${jwt.admin-secret-key}
+    # 设置jwt过期时间，添加默认值回退
+    admin-ttl: ${jwt.admin-ttl:7200000}
+    # 设置前端传递过来的令牌名称
+    admin-token-name: ${jwt.admin-token-name}
+    user-secret-key: the program is made by archester and xuxugege
+    user-ttl: 7200000
+    user-token-name: authentication
 
 mybatis:
   #mapper配置文件

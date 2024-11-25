@@ -44,6 +44,7 @@ export default {
         password: '',
         confirmPassword: ''
       },
+      publicKey: '',
       rules: {}
     };
   },
@@ -103,25 +104,59 @@ export default {
     },
     // 注册方法
     register() {
-      const encrypt = new JSEncrypt();
-      // 后端提供的公钥，需要在组件中获取或在请求时动态获取
-      encrypt.setPublicKey(this.publicKey);
-      const encryptedPassword = encrypt.encrypt(this.form.password);
-      // 准备提交的数据
-      const submitData = {
-        username: this.form.username,
-        email: this.form.email,
-        mobile: this.form.mobile,
-        password: encryptedPassword
-      };
-      // 发送请求
-      this.$axios.post('/api/user/user/register', submitData)
-        .then(response => {
-          // 处理成功响应
+      // 动态获取公钥并进行注册
+      this.getPublicKey()
+        .then(publicKey => {
+          const encrypt = new JSEncrypt();
+          encrypt.setPublicKey(publicKey);
+          const encryptedPassword = encrypt.encrypt(this.form.password);
+
+          // 准备提交的数据
+          const submitData = {
+            username: this.form.username,
+            email: this.form.email,
+            mobile: this.form.mobile,
+            password: encryptedPassword
+          };
+
+          // 发送注册请求
+          this.$axios.post('/api/user/user/register', submitData)
+            .then(response => {
+              // 处理成功响应
+              console.log('注册成功', response.data);
+              this.$message.success('注册成功，请登录！');
+              // 跳转到登录页面
+              setTimeout(() => {
+                this.$router.push('/login'); // 假设登录页面的路由是 /login
+              }, 1500); // 延迟 1.5 秒后跳转
+            })
+            .catch(error => {
+              // 处理错误响应
+              console.error('注册失败', error);
+              this.$message.error('注册失败，请重试！');
+            });
         })
         .catch(error => {
-          // 处理错误响应
+          console.error('获取公钥失败', error);
+          this.$message.error('无法获取公钥，注册失败！');
         });
+    },
+
+    // 动态获取公钥
+    getPublicKey() {
+      return new Promise((resolve, reject) => {
+        this.$axios.get('/api/public-key')
+          .then(response => {
+            if (response.data && response.data.publicKey) {
+              resolve(response.data.publicKey);
+            } else {
+              reject(new Error('未获取到有效的公钥'));
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
     },
     // 重置表单
     resetForm() {
