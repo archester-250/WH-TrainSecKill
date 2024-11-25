@@ -266,11 +266,11 @@ http://localhost:28080/user/products/2
 ------------
 
 
-ResponseEntity.ok(PRIVATE_KEY);
+ResponseEntity.ok(Map<String, String>);
 
 - 响应格式
 ```json
-{	    
-  "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALmIDD+4R5QU2yV8CjQX3wMYYo6wRZx3OcC84AN5UncLxyEf5ejhFZ7J6mFK8sM8RNedhoxDEM43UScvBWD42fMCAwEAAQ=="
+{
+  "publicKey": "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALmIDD+4R5QU2yV8CjQX3wMYYo6wRZx3OcC84AN5UncLxyEf5ejhFZ7J6mFK8sM8RNedhoxDEM43UScvBWD42fMCAwEAAQ=="
 }
 ```
