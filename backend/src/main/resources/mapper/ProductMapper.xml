@@ -9,7 +9,7 @@
                 AND name LIKE CONCAT('%', #{keyword}, '%')
             </if>
             <if test="categoryId != null">
---                 AND category_id = #{categoryId}
+                AND category = #{categoryId}
             </if>
             <if test="priceMin != null">
                 AND price >= #{priceMin}

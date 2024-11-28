@@ -1,6 +1,7 @@
 package com.pku.controller.product;
 
 
+import com.pku.pojo.entity.Category;
 import com.pku.pojo.entity.Product;
 import com.pku.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,12 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @Slf4j
 @RequestMapping("/user/products")
 public class ProductController {
-    @Autowired private ProductService productService;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("")
     public ResponseEntity<Page<Product>> getProducts(@RequestParam(defaultValue = "1") int page,
