@@ -22,14 +22,17 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_goods`;
 CREATE TABLE `t_goods`  (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '商品ID',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品标题',
-  `img` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品图片URL',
-  `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '商品详情描述',
-  `price` decimal(10, 2) NOT NULL COMMENT '商品价格',
-  `stock` int NULL DEFAULT 0 COMMENT '库存数量，-1表示无限制',
-  PRIMARY KEY (`id`) USING BTREE
+    `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '商品ID',
+    `category_id` bigint UNSIGNED NOT NULL COMMENT '商品类别',
+    `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
+    `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品标题',
+    `img` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品图片URL',
+    `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '商品详情描述',
+    `price` decimal(10, 2) NOT NULL COMMENT '商品价格',
+    `stock` int NULL DEFAULT 0 COMMENT '库存数量，-1表示无限制',
+    PRIMARY KEY (`id`) USING BTREE,
+    INDEX `fk_goods_category`(`category_id` ASC) USING BTREE,
+    CONSTRAINT `fk_goods_category` FOREIGN KEY (`category_id`) REFERENCES `t_category` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -106,5 +109,17 @@ CREATE TABLE `t_user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_mobile`(`mobile` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- Table structure for t_category
+-- ----------------------------
+DROP TABLE IF EXISTS `t_category`;
+CREATE TABLE `t_category`  (
+   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '类别id',
+   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '类别名称',
+   PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '类别表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
