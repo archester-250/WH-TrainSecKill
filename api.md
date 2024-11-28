@@ -14,10 +14,10 @@ ResponseEntity.ok("注册成功！");
 - 请求格式
 ```json
 {
-    "username" : "test",
-    "password" : "B2snWkw9S768FHOtOLY0iU8owSaSAydjCr18qcFTA2lgDIFlo6fIyfeOlKkdTYnzAByCpaE5HDlKByUNeIObWQ==",
-	"email" : "123@123",
-	"mobile" : "123456"
+  "username" : "test",
+  "password" : "B2snWkw9S768FHOtOLY0iU8owSaSAydjCr18qcFTA2lgDIFlo6fIyfeOlKkdTYnzAByCpaE5HDlKByUNeIObWQ==",
+  "email" : "123@123",
+  "mobile" : "123456"
 }
 ```
 - password
@@ -37,8 +37,8 @@ ResponseEntity.ok(token);
 - 请求格式
 ```json
 {
-    "username" : "test",
-    "password" : "B2snWkw9S768FHOtOLY0iU8owSaSAydjCr18qcFTA2lgDIFlo6fIyfeOlKkdTYnzAByCpaE5HDlKByUNeIObWQ=="
+  "username" : "test",
+  "password" : "B2snWkw9S768FHOtOLY0iU8owSaSAydjCr18qcFTA2lgDIFlo6fIyfeOlKkdTYnzAByCpaE5HDlKByUNeIObWQ=="
 }
 ```
 -响应成功格式
@@ -57,28 +57,28 @@ ResponseEntity.ok(token);
 - 请求格式
 ```json
 {
-    "id" : "1"
+  "id" : "1"
 }
 ```
 - 响应格式
 ```json
 {
-    "id": 1,
-    "nickname": "xuxugege123",
-    "password": "123456",
-    "salt": "test",
-    "email": "123@123",
-    "mobile": "201314",
-    "registerDate": [
-        2024,
-        11,
-        22,
-        19,
-        47,
-        26
-    ],
-    "lastLoginDate": null,
-    "loginCount": 0
+  "id": 1,
+  "nickname": "xuxugege123",
+  "password": "123456",
+  "salt": "test",
+  "email": "123@123",
+  "mobile": "201314",
+  "registerDate": [
+    2024,
+    11,
+    22,
+    19,
+    47,
+    26
+  ],
+  "lastLoginDate": null,
+  "loginCount": 0
 }
 ```
 
@@ -115,51 +115,51 @@ http://localhost:28080/user/products?page=2&size=2
 ```
 ```json
 {
-    "content": [
-        {
-            "id": 3,
-            "name": "辣条",
-            "title": "辣条",
-            "img": null,
-            "detail": "爽",
-            "price": 1.50,
-            "stock": 66
-        },
-        {
-            "id": 4,
-            "name": "卫生纸",
-            "title": "t4",
-            "img": null,
-            "detail": "d4",
-            "price": 3.34,
-            "stock": 5
-        }
-    ],
-    "pageable": {
-        "pageNumber": 1,
-        "pageSize": 2,
-        "sort": {
-            "empty": true,
-            "sorted": false,
-            "unsorted": true
-        },
-        "offset": 2,
-        "paged": true,
-        "unpaged": false
+  "content": [
+    {
+      "id": 3,
+      "name": "辣条",
+      "title": "辣条",
+      "img": null,
+      "detail": "爽",
+      "price": 1.50,
+      "stock": 66
     },
-    "last": true,
-    "totalPages": 2,
-    "totalElements": 4,
-    "size": 2,
-    "number": 1,
+    {
+      "id": 4,
+      "name": "卫生纸",
+      "title": "t4",
+      "img": null,
+      "detail": "d4",
+      "price": 3.34,
+      "stock": 5
+    }
+  ],
+  "pageable": {
+    "pageNumber": 1,
+    "pageSize": 2,
     "sort": {
-        "empty": true,
-        "sorted": false,
-        "unsorted": true
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
     },
-    "first": false,
-    "numberOfElements": 2,
-    "empty": false
+    "offset": 2,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 2,
+  "totalElements": 4,
+  "size": 2,
+  "number": 1,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "first": false,
+  "numberOfElements": 2,
+  "empty": false
 }
 ```
 ```html
@@ -167,60 +167,60 @@ http://localhost:28080/user/products?priceMin=1&priceMax=2.5
 ```
 ```json
 {
-    "content": [
-        {
-            "id": 1,
-            "name": "可乐",
-            "title": "可乐",
-            "img": "",
-            "detail": "快乐水",
-            "price": 2.50,
-            "stock": -1
-        },
-        {
-            "id": 2,
-            "name": "雪碧",
-            "title": "雪碧",
-            "img": null,
-            "detail": "清爽",
-            "price": 2.50,
-            "stock": -1
-        },
-        {
-            "id": 3,
-            "name": "辣条",
-            "title": "辣条",
-            "img": null,
-            "detail": "爽",
-            "price": 1.50,
-            "stock": 66
-        }
-    ],
-    "pageable": {
-        "pageNumber": 0,
-        "pageSize": 3,
-        "sort": {
-            "empty": true,
-            "sorted": false,
-            "unsorted": true
-        },
-        "offset": 0,
-        "paged": true,
-        "unpaged": false
+  "content": [
+    {
+      "id": 1,
+      "name": "可乐",
+      "title": "可乐",
+      "img": "",
+      "detail": "快乐水",
+      "price": 2.50,
+      "stock": -1
     },
-    "last": true,
-    "totalPages": 1,
-    "totalElements": 3,
-    "size": 3,
-    "number": 0,
+    {
+      "id": 2,
+      "name": "雪碧",
+      "title": "雪碧",
+      "img": null,
+      "detail": "清爽",
+      "price": 2.50,
+      "stock": -1
+    },
+    {
+      "id": 3,
+      "name": "辣条",
+      "title": "辣条",
+      "img": null,
+      "detail": "爽",
+      "price": 1.50,
+      "stock": 66
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 3,
     "sort": {
-        "empty": true,
-        "sorted": false,
-        "unsorted": true
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
     },
-    "first": true,
-    "numberOfElements": 3,
-    "empty": false
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 3,
+  "size": 3,
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "first": true,
+  "numberOfElements": 3,
+  "empty": false
 }
 ```
 
@@ -246,13 +246,13 @@ http://localhost:28080/user/products/2
 - 响应格式
 ```json
 {
-    "id": 2,
-    "name": "雪碧",
-    "title": "雪碧",
-    "img": null,
-    "detail": "清爽",
-    "price": 2.50,
-    "stock": -1
+  "id": 2,
+  "name": "雪碧",
+  "title": "雪碧",
+  "img": null,
+  "detail": "清爽",
+  "price": 2.50,
+  "stock": -1
 }
 ```
 
@@ -273,4 +273,30 @@ ResponseEntity.ok(Map<String, String>);
 {
   "publicKey": "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALmIDD+4R5QU2yV8CjQX3wMYYo6wRZx3OcC84AN5UncLxyEf5ejhFZ7J6mFK8sM8RNedhoxDEM43UScvBWD42fMCAwEAAQ=="
 }
+```
+
+## CategoryController层 "/user/categories"
+### 获取类别
+#### @GetMapping("")
+
+
+------------
+
+ResponseEntity.ok(categories);
+- 响应格式
+```json
+[
+    {
+        "id": 1,
+        "name": "水"
+    },
+    {
+        "id": 2,
+        "name": "日用品"
+    },
+    {
+        "id": 3,
+        "name": "零食"
+    }
+]
 ```
