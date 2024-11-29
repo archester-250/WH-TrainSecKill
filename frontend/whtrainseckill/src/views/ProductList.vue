@@ -22,19 +22,19 @@
         ></el-option>
       </el-select>
       <!-- 价格区间筛选 -->
-      <el-input-number
+      <el-input
         v-model="priceRange.min"
         @change="handleFilter"
         :min="0"
         placeholder="最低价"
-      ></el-input-number>
+      ></el-input>
       <span>-</span>
-      <el-input-number
+      <el-input
         v-model="priceRange.max"
         @change="handleFilter"
         :min="0"
         placeholder="最高价"
-      ></el-input-number>
+      ></el-input>
       <!-- 重置筛选 -->
       <el-button @click="resetFilter">重置筛选</el-button>
     </div>
@@ -93,10 +93,10 @@ export default {
     fetchCategories() {
     this.$axios.get('/api/user/categories')
         .then(response => {
-        if (response.data.code === 200) {
-            this.categories = response.data.data;
+        if (response.status === 200) {
+            this.categories = response.data;
         } else {
-            this.$message.error(response.data.message);
+            this.$message.error(response.statusText);
         }
         })
         .catch(error => {
@@ -106,20 +106,21 @@ export default {
     },
     fetchProducts() {
         const params = {
-        page: this.currentPage,
-        size: this.pageSize,
-        keyword: this.searchKeyword,
-        category: this.selectedCategory,
-        priceMin: this.priceRange.min,
-        priceMax: this.priceRange.max
+          page: this.currentPage,
+          size: this.pageSize,
+          keyword: this.searchKeyword,
+          category: this.selectedCategory,
+          priceMin: this.priceRange.min,
+          priceMax: this.priceRange.max
         };
+        console.log(params.priceMin, params.priceMax);
         this.$axios.get('/api/user/products', { params })
         .then(response => {
-            if (response.data.code === 200) {
-            this.products = response.data.data.records;
-            this.total = response.data.data.total;
+            if (response.status === 200) {
+            this.products = response.data.content;
+            this.total = response.data.size;
             } else {
-            this.$message.error(response.data.message);
+            this.$message.error(response.statusText);
             }
         })
         .catch(error => {

@@ -3,37 +3,60 @@
 
  Source Server         : MySQL
  Source Server Type    : MySQL
- Source Server Version : 80040 (8.0.40)
+ Source Server Version : 80403 (8.4.3)
  Source Host           : localhost:3306
  Source Schema         : wh_seckill
 
  Target Server Type    : MySQL
- Target Server Version : 80040 (8.0.40)
+ Target Server Version : 80403 (8.4.3)
  File Encoding         : 65001
 
- Date: 24/11/2024 17:26:46
+ Date: 29/11/2024 14:57:08
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
+-- Table structure for t_category
+-- ----------------------------
+DROP TABLE IF EXISTS `t_category`;
+CREATE TABLE `t_category`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '类别id',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '类别名称',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '类别表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_category
+-- ----------------------------
+INSERT INTO `t_category` VALUES (1, '手机');
+INSERT INTO `t_category` VALUES (2, '电脑');
+
+-- ----------------------------
 -- Table structure for t_goods
 -- ----------------------------
 DROP TABLE IF EXISTS `t_goods`;
 CREATE TABLE `t_goods`  (
-    `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '商品ID',
-    `category_id` bigint UNSIGNED NOT NULL COMMENT '商品类别',
-    `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-    `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品标题',
-    `img` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品图片URL',
-    `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '商品详情描述',
-    `price` decimal(10, 2) NOT NULL COMMENT '商品价格',
-    `stock` int NULL DEFAULT 0 COMMENT '库存数量，-1表示无限制',
-    PRIMARY KEY (`id`) USING BTREE,
-    INDEX `fk_goods_category`(`category_id` ASC) USING BTREE,
-    CONSTRAINT `fk_goods_category` FOREIGN KEY (`category_id`) REFERENCES `t_category` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品表' ROW_FORMAT = Dynamic;
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '商品ID',
+  `category_id` bigint UNSIGNED NOT NULL COMMENT '商品类别',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品标题',
+  `img` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品图片URL',
+  `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '商品详情描述',
+  `price` decimal(10, 2) NOT NULL COMMENT '商品价格',
+  `stock` int NULL DEFAULT 0 COMMENT '库存数量，-1表示无限制',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_goods_category`(`category_id` ASC) USING BTREE,
+  CONSTRAINT `fk_goods_category` FOREIGN KEY (`category_id`) REFERENCES `t_category` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_goods
+-- ----------------------------
+INSERT INTO `t_goods` VALUES (1, 1, '华为note12', '华为note12', NULL, '好', 29999.00, 5);
+INSERT INTO `t_goods` VALUES (2, 1, '小米mate7', '小米mate7', NULL, '好好', 3999.00, 2);
+INSERT INTO `t_goods` VALUES (3, 2, '联想mini2024', '联想mini2024', NULL, '好好好', 12700.00, 3);
 
 -- ----------------------------
 -- Table structure for t_order
@@ -56,7 +79,11 @@ CREATE TABLE `t_order`  (
   INDEX `idx_goods_id`(`goods_id` ASC) USING BTREE,
   CONSTRAINT `fk_order_goods` FOREIGN KEY (`goods_id`) REFERENCES `t_goods` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_order_user` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_order
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_seckill_goods
@@ -72,7 +99,11 @@ CREATE TABLE `t_seckill_goods`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_goods_id`(`goods_id` ASC) USING BTREE,
   CONSTRAINT `fk_goods_id` FOREIGN KEY (`goods_id`) REFERENCES `t_goods` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀商品表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀商品表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_seckill_goods
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_seckill_order
@@ -90,7 +121,11 @@ CREATE TABLE `t_seckill_order`  (
   CONSTRAINT `fk_seckill_order_goods` FOREIGN KEY (`goods_id`) REFERENCES `t_goods` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_seckill_order_order` FOREIGN KEY (`order_id`) REFERENCES `t_order` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_seckill_order_user` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀订单表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀订单表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_seckill_order
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_user
@@ -108,18 +143,11 @@ CREATE TABLE `t_user`  (
   `login_count` int NULL DEFAULT 0 COMMENT '登录次数',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_mobile`(`mobile` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
-
-SET FOREIGN_KEY_CHECKS = 1;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Table structure for t_category
+-- Records of t_user
 -- ----------------------------
-DROP TABLE IF EXISTS `t_category`;
-CREATE TABLE `t_category`  (
-   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '类别id',
-   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '类别名称',
-   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '类别表' ROW_FORMAT = Dynamic;
+INSERT INTO `t_user` VALUES (1, '1234', 'Abcd1234!', '27e202b10190aebe', '1146802625@qq.com', '18577885423', '2024-11-29 13:31:12', '2024-11-29 14:55:46', 13);
 
 SET FOREIGN_KEY_CHECKS = 1;
