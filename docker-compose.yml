@@ -4,6 +4,7 @@ services:
   mysql:
     container_name: seckill-mysql
     image: mysql:8
+    privileged: true
     restart: unless-stopped
     tty: true
     ports:
@@ -29,6 +30,7 @@ services:
     build:
       context: ./backend/
     image: seckill-server
+    privileged: true
     restart: unless-stopped
     ports:
       - "28080:28080"
@@ -58,6 +60,7 @@ services:
           ENV=${NODE_ENV:-production}
           VUE_APP_TITLE=${VUE_APP_TITLE:-seckill管理系统}
     image: seckill-web
+    privileged: true
     restart: unless-stopped
     ports:
       - "80:80"

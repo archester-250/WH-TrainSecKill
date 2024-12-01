@@ -42,10 +42,10 @@ fi
 
 echo -e "开始构建 jar 包..."
 
-docker run -it --rm --name seckill-maven \
-    -v seckill-maven-repo:/root/.m2 \
-    -v "$PWD/backend":/usr/src/mymaven \
-    -w /usr/src/mymaven \
+docker run --privileged -it --rm --name seckill-maven \
+    --privileged -v seckill-maven-repo:/root/.m2 \
+    --privileged -v "$PWD/backend":/usr/src/mymaven \
+    --privileged -w /usr/src/mymaven \
     maven:3.9.9-eclipse-temurin-17 mvn clean install package -e '-Dmaven.test.skip=true' || { echo -e "${RED}构建 jar 包失败。${NC}"; exit 1; }
 
 echo -e "通过容器构建 jar 包......${GREEN}通过${NC}"
