@@ -41,6 +41,12 @@
     <div v-if="products.length === 0">
         <p>抱歉，没有找到相关商品。</p>
     </div>
+    <!-- 订单管理入口 -->
+    <div class="order-management">
+      <el-button type="primary" @click="goToOrderManagement">
+        查看订单
+      </el-button>
+    </div>
     <!-- 商品展示区域 -->
     <el-row :gutter="20">
       <el-col :span="6" v-for="product in products" :key="product.id">
@@ -149,7 +155,10 @@ export default {
     },
     goToDetail(productId) {
       this.$router.push(`/product/${productId}`);
-    }
+    },
+    goToOrderManagement() {
+      this.$router.push('/orders'); // 跳转到订单管理页面
+    },
   }
 };
 </script>
@@ -187,5 +196,9 @@ export default {
 .pagination {
   text-align: center;
   margin-top: 20px;
+}
+.order-management {
+  text-align: right;
+  margin-bottom: 20px;
 }
 </style>
