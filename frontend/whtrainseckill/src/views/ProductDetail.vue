@@ -92,12 +92,12 @@ export default {
     fetchProductDetail() {
       this.$axios.get(`/api/user/products/${this.productId}`)
         .then(response => {
-          if (response.data.code === 200) {
-            this.product = response.data.data;
+          if (response.status === 200) {
+            this.product = response.data;
             this.imageList = [this.product.img]; // 如果有多张图片，可调整此处
             this.mainImage = this.product.img;
           } else {
-            this.$message.error(response.data.message);
+            this.$message.error(response.statusText);
           }
         })
         .catch(error => {
