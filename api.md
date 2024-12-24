@@ -300,3 +300,122 @@ ResponseEntity.ok(categories);
     }
 ]
 ```
+
+## OrderController层 “/user/order”
+
+------------
+
+### 下单
+#### PostMapping("/add")
+|情况   |返回结果   |
+| ------------ | ------------ |
+|商品不存在   |notFound 404  |
+|库存不足   |badRequest 400  |
+|下单成功   |ok 200  |
+请求格式
+```json
+{
+    "goodsId" : 8,
+    "goodsCount" : 2
+}
+```
+
+
+------------
+
+### 取消订单
+#### PostMapping("/cancel/{id}")
+|情况   |返回结果   |
+| ------------ | ------------ |
+|订单不存在|notFound 404|
+|重复删除|badRequest 400|
+|取消成功|ok 200|
+
+------------
+
+
+### 获取订单列表
+#### GetMapping("")
+请求格式`http://localhost:28080/user/order?page=1&size=2`
+
+@RequestParam(defaultValue = "1") int page,
+@RequestParam(defaultValue = "3") int size
+
+返回格式
+```json
+{
+    "content": [
+        {
+            "id": 1,
+            "goodsName": "辣条",
+            "goodsCount": 3,
+            "goodsPrice": 1.50,
+            "status": 1,
+            "createDate": [
+                2024,
+                12,
+                24,
+                15,
+                3,
+                19
+            ],
+            "payDate": [
+                2024,
+                12,
+                24,
+                15,
+                3,
+                19
+            ]
+        },
+        {
+            "id": 2,
+            "goodsName": "辣条",
+            "goodsCount": 3,
+            "goodsPrice": 1.50,
+            "status": 1,
+            "createDate": [
+                2024,
+                12,
+                24,
+                15,
+                3,
+                47
+            ],
+            "payDate": [
+                2024,
+                12,
+                24,
+                15,
+                3,
+                47
+            ]
+        }
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 2,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
+    },
+    "last": true,
+    "totalElements": 2,
+    "totalPages": 1,
+    "size": 2,
+    "number": 0,
+    "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+    },
+    "first": true,
+    "numberOfElements": 2,
+    "empty": false
+}
+```
