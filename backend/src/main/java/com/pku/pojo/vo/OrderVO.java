@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 public class OrderVO {
     public Long id;
     private String goodsName;
-    private Long goodsCount;
+    private Integer goodsCount;
     private BigDecimal goodsPrice;
     private int status;
     private LocalDateTime createDate;
     private LocalDateTime payDate;
+}
