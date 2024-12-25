@@ -39,11 +39,6 @@
         <div class="product-stock">
           库存：<span>{{ product.stock > 0 ? product.stock : '缺货' }}</span>
         </div>
-        <!-- 规格选择（若有） -->
-        <!-- <div class="product-spec">
-          <span>规格：</span>
-          <!-- 规格选项 -->
-        <!-- </div> -->
         <!-- 购买数量 -->
         <div class="product-quantity">
           <span>数量：</span>
@@ -115,8 +110,23 @@ export default {
       }
     },
     buyNow() {
-      // 立即购买逻辑
-      this.$message.success('购买功能尚未实现');
+      const submitData = {
+        'goodsId' : this.$data.productId,
+        'goodsCount' : this.$data.quantity
+      }
+      this.$axios.post(`/api/user/order/add`, submitData)
+        .then(response => {
+          if (response.status === 200) {
+            this.$message.success('下单成功');
+            this.fetchProductDetail();
+          } else {
+            this.$message.error(response.statusText);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          this.$message.error('下单失败');
+        });
     },
     addToCart() {
       // 加入购物车逻辑
