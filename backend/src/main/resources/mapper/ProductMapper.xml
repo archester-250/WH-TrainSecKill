@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pku.mapper.ProductMapper">
+    <update id="updateProduct">
+        update t_goods
+        set stock = #{stock}
+        where id = #{id}
+    </update>
     <select id="searchProducts">
         select * from t_goods
         <where>

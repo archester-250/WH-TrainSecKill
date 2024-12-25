@@ -10,6 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface ProductMapper {
+    void updateProduct(Product product);
     List<Product> searchProducts(
             @Param("offset") Integer offset,
             @Param("pageSize") Integer pageSize,
@@ -20,4 +21,5 @@ public interface ProductMapper {
     );
     @Select("select * from t_goods where id = #{productId}")
     Product selectProductById(Long productId);
+
 }
