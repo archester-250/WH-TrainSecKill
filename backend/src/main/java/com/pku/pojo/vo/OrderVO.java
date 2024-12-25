@@ -14,3 +14,4 @@ public class OrderVO {
     private int status;
     private LocalDateTime createDate;
     private LocalDateTime payDate;
+}

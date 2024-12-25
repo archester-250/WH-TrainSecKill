@@ -2,18 +2,18 @@
     <div class="order-list">
         <h2>我的订单</h2>
         <el-table :data="orders" border style="width: 100%">
-            <el-table-column prop="orderNo" label="订单编号" width="200" />
-            <el-table-column prop="productName" label="商品信息" />
+            <el-table-column prop="id" label="订单编号" width="200" />
+            <el-table-column prop="goodsName" label="商品信息" />
             <el-table-column prop="status" label="订单状态" />
-            <el-table-column prop="createdAt" label="下单时间" width="200" />
+            <el-table-column prop="createDate" label="下单时间" width="200" />
             <el-table-column label="操作" width="150">
                 <template #default="{ row }">
                     <el-button v-if="row.status === '待发货'" type="danger" size="small" @click="cancelOrder(row.id)">
                         取消订单
                     </el-button>
-                    <el-button type="primary" size="small" @click="viewDetail(row.id)">
+                    <!-- <el-button type="primary" size="small" @click="viewDetail(row.id)">
                         查看详情
-                    </el-button>
+                    </el-button> -->
                 </template>
             </el-table-column>
         </el-table>
@@ -45,7 +45,7 @@ export default {
                 size: this.pageSize,
             };
             this.$axios
-                .get('/api/user/orders', { params })
+                .get('/api/user/order', { params })
                 .then((response) => {
                     if (response.status === 200) {
                         this.orders = response.data.content;
@@ -69,7 +69,7 @@ export default {
             })
                 .then(() => {
                     this.$axios
-                        .post(`/api/user/orders/${orderId}/cancel`)
+                        .post(`/api/user/order/cancel/${orderId}`)
                         .then((response) => {
                             if (response.status === 200) {
                                 this.$message.success('订单取消成功');
@@ -87,9 +87,9 @@ export default {
                     this.$message.info('已取消操作');
                 });
         },
-        viewDetail(orderId) {
-            this.$router.push(`/order/${orderId}`);
-        },
+        // viewDetail(orderId) {
+        //     this.$router.push(`/order/${orderId}`);
+        // },
     },
 };
 </script>
