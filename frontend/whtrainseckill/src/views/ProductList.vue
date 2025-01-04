@@ -41,11 +41,10 @@
     <div v-if="products.length === 0">
         <p>抱歉，没有找到相关商品。</p>
     </div>
-    <!-- 订单管理入口 -->
-    <div class="order-management">
-      <el-button type="primary" @click="goToOrderManagement">
-        查看订单
-      </el-button>
+    <!-- 操作按钮 -->
+    <div class="actions">
+      <el-button type="primary" @click="goToOrderManagement">查看订单</el-button>
+      <el-button type="danger" @click="goToSeckill">秒杀活动</el-button>
     </div>
     <!-- 商品展示区域 -->
     <el-row :gutter="20">
@@ -158,6 +157,9 @@ export default {
     },
     goToOrderManagement() {
       this.$router.push('/orders'); // 跳转到订单管理页面
+    },
+    goToSeckill() {
+      this.$router.push('/seckill'); // 跳转到秒杀活动页面
     },
   }
 };
