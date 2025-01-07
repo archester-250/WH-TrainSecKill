@@ -10,4 +10,5 @@ public interface UserService {
     public Long registerUser(UserDTO userDTO);
     public Long loginUser(UserDTO userDTO);
     public User getUserById(Long userId);
+    public boolean isAdmin(Long userId);
 }

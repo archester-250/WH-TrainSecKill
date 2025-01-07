@@ -23,5 +23,6 @@ public class User {
     private LocalDateTime registerDate;
     private LocalDateTime lastLoginDate;
     private Integer loginCount;
+    private Integer role;
 }
 //User中的名字需于数据库一致，要不然会导致null返回值

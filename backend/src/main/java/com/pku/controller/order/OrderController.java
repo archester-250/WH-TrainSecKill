@@ -26,6 +26,8 @@ public class OrderController {
         }else if(status == -2){
             return ResponseEntity.badRequest().body("库存不足");
         }else{
+            String msg = "orderId为："+String.valueOf(status);
+            log.info(msg);
             return ResponseEntity.ok("下单成功");
         }
     }

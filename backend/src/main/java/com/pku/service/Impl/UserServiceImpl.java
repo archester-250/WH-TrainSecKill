@@ -77,6 +77,15 @@ public class UserServiceImpl implements UserService {
         }
         return users.get(0);
     }
+
+    @Override
+    public boolean isAdmin(Long userId) {
+        List<User> users = userMapper.selectUserById(userId);
+        if(users == null || users.isEmpty() || users.get(0).getRole() == 0) {
+            return false;
+        }
+        return true;
+    }
 }
 
 

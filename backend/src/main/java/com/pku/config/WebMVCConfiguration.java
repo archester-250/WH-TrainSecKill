@@ -21,9 +21,9 @@ public class WebMVCConfiguration extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtUserInterceptor)
                 .addPathPatterns("/user/**")
-                .excludePathPatterns("/user/user/register", "/user/user/login", "/user/user/info", "/public-key");
+                .excludePathPatterns("/user/user/register", "/user/user/login", "/user/user/info", "/public-key", "/user/seckill/sec", "/user/admin/**");
     }
-
+    //"/user/seckill/sec"
     @Override
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();

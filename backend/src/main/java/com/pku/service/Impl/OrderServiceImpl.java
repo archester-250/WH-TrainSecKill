@@ -51,7 +51,8 @@ public class OrderServiceImpl implements OrderService {
         }
         productMapper.updateProduct(product);
         Order order = Order.builder()
-                .userId(BaseContext.getCurrentId())
+                .userId(orderDTO.getUserId())
+//                .userId(BaseContext.getCurrentId())
                 .goodsId(orderDTO.getGoodsId())
                 .deliveryAddrId((long)0)
                 .goodsName(product.getName())
@@ -63,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
                 .payDate(LocalDateTime.now())
                 .build();
         orderMapper.addOrder(order);
-        return (long) 1;
+        return order.getId();
     }
 
     @Transactional
