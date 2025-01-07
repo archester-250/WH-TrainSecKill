@@ -419,3 +419,169 @@ ResponseEntity.ok(categories);
     "empty": false
 }
 ```
+
+# Admin Controller API
+
+## 概述
+`AdminController` 是一个用于管理秒杀活动的RESTful API控制器，提供了创建、更新和删除秒杀活动的功能。它通过与 `SeckillGoodsService`、`RedisService` 和 `UserService` 进行交互来实现这些功能。
+
+## 基础信息
+- **Base URL**: `/user/admin`
+- **认证**: 需要管理员权限
+
+## API接口
+
+### 创建秒杀活动
+- **URL**: `/create?userId=2`
+- **方法**: `POST`
+- **请求参数**:
+  - `seckillGoods` (JSON, body): 秒杀商品信息
+      ```json
+      {
+          "goodsId": 1,
+          "seckillPrice": 22.22,
+          "stockCount": 100,
+          "startTime": "2025-01-01T00:00:00",
+          "endTime": "2025-01-01T23:59:59"
+      }
+      ```
+  - `userId` (Long, query): 用户ID
+- **返回值**:
+  - `200 OK`: 创建成功，返回创建状态
+      ```json
+      {
+          "message": "创建成功：1"
+      }
+      ```
+  - `400 Bad Request`: 用户无权限访问
+      ```json
+      {
+          "message": "该用户无权限访问"
+      }
+      ```
+
+### 更新秒杀活动
+- **URL**: `/update?userId=2`
+- **方法**: `PUT`
+- **请求参数**:
+  - `seckillGoods` (JSON, body): 秒杀商品信息，部分/全部都可
+      ```json
+      {
+          "id": 1,
+          "goodsId": 1,
+          "seckillPrice": 22.22,
+          "stockCount": 50,
+          "startTime": "2025-01-01T00:00:00",
+          "endTime": "2025-01-01T23:59:59"
+      }
+      ```
+  - `userId` (Long, query): 用户ID
+- **返回值**:
+  - `200 OK`: 更新成功
+      ```json
+      {
+          "message": "更新成功"
+      }
+      ```
+  - `400 Bad Request`: 用户无权限访问
+      ```json
+      {
+          "message": "该用户无权限访问"
+      }
+      ```
+  - `404 Not Found`: 秒杀商品未找到
+
+### 删除秒杀活动
+- **URL**: `/delete?userId=2`
+- **方法**: `DELETE`
+- **请求参数**:
+  - `seckillGoods` (JSON, body): 秒杀商品信息
+      ```json
+      {
+          "id": 1
+      }
+      ```
+  - `userId` (Long, query): 用户ID
+- **返回值**:
+  - `200 OK`: 删除成功
+      ```json
+      {
+          "message": "删除成功"
+      }
+      ```
+  - `400 Bad Request`: 用户无权限访问
+      ```json
+      {
+          "message": "该用户无权限访问"
+      }
+      ```
+
+## 注意事项
+- 所有请求都需要管理员权限，否则会返回400错误.
+- 创建和更新秒杀活动时，需要提供完整的秒杀商品信息，包括商品ID、库存数量、开始时间和结束时间.
+- 删除秒杀活动时，只需要提供秒杀商品的ID即可.
+
+
+# Seckill Controller API
+
+## 概述
+`SeckillController` 是一个用于处理秒杀活动的RESTful API控制器，提供了秒杀操作和查询秒杀商品的功能。它通过与 `RedisService`、`SeckillGoodsService`、`SeckillOrderService` 和 `RabbitTemplate` 进行交互来实现秒杀逻辑。
+
+## 基础信息
+- **Base URL**: `/user/seckill`
+
+## API接口
+
+### 秒杀操作
+- **URL**: `/sec?userId=1&goodsId=1`
+- **方法**: `GET`
+- **请求参数**:
+  - `userId` (Long, query): 用户ID
+  - `goodsId` (Long, query): 商品ID
+- **返回值**:
+  - `200 OK`: 秒杀成功
+      ```json
+      {
+          "message": "用户1 秒杀->商品1成功"
+      }
+      ```
+  - `400 Bad Request`: 秒杀失败，原因可能包括库存不足、用户已购买、秒杀活动未开始或已结束等
+      ```json
+      {
+          "message": "商品的库存量没有剩余或商品不存在,秒杀结束"
+      }
+      ```
+  - `404 Not Found`: 商品不存在
+- **描述**:
+  - 使用Redis和消息队列实现秒杀操作。
+  - 首先检查库存，如果库存不足或活动未开始/已结束，则返回相应错误信息。
+  - 检查用户是否已购买该商品，如果已购买则返回错误信息。
+  - 扣减库存并发送消息到库存消息队列和订单消息队列，记录用户购买信息。
+
+### 查询秒杀商品
+- **URL**: `/secGoods`
+- **方法**: `GET`
+- **返回值**:
+  - `200 OK`: 返回所有秒杀商品信息
+      ```json
+      [
+          {
+              "id": 1,
+              "goodsId": 1,
+              "seckillPrice": 22.22,
+              "stockCount": 100,
+              "startDate": "2025-01-01T00:00:00",
+              "endDate": "2025-01-01T23:59:59"
+          },
+          {
+              "id": 2,
+              "goodsId": 2,
+              "seckillPrice": 33.3,
+              "stockCount": 50,
+              "startDate": "2025-01-02T00:00:00",
+              "endDate": "2025-01-02T23:59:59"
+          }
+      ]
+      ```
+- **描述**:
+  - 返回所有可用的秒杀商品信息.
