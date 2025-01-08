@@ -130,7 +130,7 @@ CREATE TABLE `t_user`  (
   `register_date` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册日期',
   `last_login_date` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后登录日期',
   `login_count` int NULL DEFAULT 0 COMMENT '登录次数',
-  `role` int NULL DEFAULT 0,
+  `role` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_mobile`(`mobile` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
