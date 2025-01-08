@@ -64,6 +64,10 @@ services:
         --spring.datasource.password=${DATASOURCE_PASSWORD:-123456}
         --spring.data.redis.host=${REDIS_HOST:-ssadmin-redis}
         --spring.rabbitmq.host=${RABBITMQ_HOST:-seckill-rabbitmq}
+        --spring.rabbitmq.username=${RABBITMQ_DEFAULT_USER:-root}
+        --spring.rabbitmq.password=${RABBITMQ_DEFAULT_PASS:-123456}
+        --seckill.jwt.admin-secret-key=thedjasfkljfaiorejklafdloierwaahfdajskhkwrqoifdanjrhewjqkhdsnfngkjeurqnfdjka
+        --seckill.jwt.admin-token-name=token
     depends_on:
       - mysql
       - redis

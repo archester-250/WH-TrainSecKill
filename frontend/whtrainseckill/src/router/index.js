@@ -8,6 +8,7 @@ import ProductDetail from '@/views/ProductDetail.vue';
 import OrderList from '@/views/OrderList.vue';
 import SeckillProductList from '../views/SeckillProductList.vue';
 import AdminLogin from '../views/AdminLogin.vue';
+import ManagementSeckill from '../views/ManagementSeckill.vue';
 
 
 Vue.use(Router);
@@ -53,6 +54,11 @@ export default new Router({
       path: '/admin/login',
       name: 'AdminLogin',
       component: AdminLogin,
+    },
+    {
+      path: '/management/seckill',
+      name: 'ManagementSeckill',
+      component: ManagementSeckill,
     }
   ]
 });

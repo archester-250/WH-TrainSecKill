@@ -58,9 +58,9 @@ export default {
                                 // 提示用户登录成功
                                 this.$message.success('登录成功！');
 
-                                // 跳转到产品页面
+                                // 跳转到管理页面
                                 setTimeout(() => {
-                                    this.$router.push('/products'); // 假设目标页面为 /products
+                                    this.$router.push('/management/seckill'); 
                                 }, 1500);
                             } else {
                                 this.$message.error('未接收到 token，登录失败！');

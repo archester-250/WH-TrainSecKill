@@ -474,7 +474,10 @@ ResponseEntity.ok(categories);
           "endTime": "2025-01-01T23:59:59"
       }
       ```
+  
+  - 均为必选项
 - **返回值**:
+
   - `200 OK`: 创建成功，返回创建状态
       ```json
       {
@@ -492,7 +495,9 @@ ResponseEntity.ok(categories);
 - **URL**: `/update`
 - **方法**: `PUT`
 - **请求参数**:
+  
   - `seckillGoods` (JSON, body): 秒杀商品信息，部分/全部都可
+      
       ```json
       {
           "id": 1,
@@ -503,9 +508,11 @@ ResponseEntity.ok(categories);
           "endTime": "2025-01-01T23:59:59"
       }
       ```
-  - `userId` (Long, query): 用户ID
+  - id为必选项，其他为可选项
 - **返回值**:
+  
   - `200 OK`: 更新成功
+      
       ```json
       {
           "message": "更新成功"
@@ -521,7 +528,9 @@ ResponseEntity.ok(categories);
 
 ### 删除秒杀活动
 - **URL**: `/delete`
+
 - **方法**: `DELETE`
+
 - **请求参数**:
   - `seckillGoods` (JSON, body): 秒杀商品信息
       ```json
@@ -529,7 +538,7 @@ ResponseEntity.ok(categories);
           "id": 1
       }
       ```
-  - `userId` (Long, query): 用户ID
+  
 - **返回值**:
   - `200 OK`: 删除成功
       ```json
