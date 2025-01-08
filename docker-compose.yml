@@ -63,7 +63,7 @@ services:
         --spring.datasource.username=${DATASOURCE_USERNAME:-root}
         --spring.datasource.password=${DATASOURCE_PASSWORD:-123456}
         --spring.data.redis.host=${REDIS_HOST:-ssadmin-redis}
-        --spring.rabbitmq.host=${RABBITMQ_HOST:-rabbitmq}
+        --spring.rabbitmq.host=${RABBITMQ_HOST:-seckill-rabbitmq}
     depends_on:
       - mysql
       - redis
