@@ -8,4 +8,5 @@ public class UserDTO {
     private String password;
     private String email;
     private String mobile;
+    private boolean isAdminLogin = false;
 }

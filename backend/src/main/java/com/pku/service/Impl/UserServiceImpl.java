@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService {
         if (users == null || users.isEmpty()) {
             return (long) -2; //账号不存在
         } else if (users.get(0).getPassword().equals(userDTO.getPassword())) {
+            if(users.get(0).getRole() == 0 && userDTO.isAdminLogin()) return (long) -4;
             User user = users.get(0);
             user.setLoginCount(user.getLoginCount() + 1);
             user.setLastLoginDate(LocalDateTime.now());

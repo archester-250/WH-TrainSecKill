@@ -20,8 +20,9 @@ public class WebMVCConfiguration extends WebMvcConfigurationSupport {
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtUserInterceptor)
-                .addPathPatterns("/user/**")
-                .excludePathPatterns("/user/user/register", "/user/user/login", "/user/user/info", "/public-key", "/user/seckill/sec", "/user/admin/**");
+                .addPathPatterns("/user/**", "/admin/**")
+                .excludePathPatterns("/user/user/register", "/user/user/login", "/user/user/info", "/public-key", "/user/seckill/sec",
+                        "/admin/admin/login");
     }
     //"/user/seckill/sec"
     @Override

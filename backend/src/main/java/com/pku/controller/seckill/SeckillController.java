@@ -4,9 +4,13 @@ import com.pku.pojo.dto.OrderDTO;
 import com.pku.pojo.entity.Product;
 import com.pku.pojo.entity.SeckillGoods;
 import com.pku.pojo.entity.SeckillOrder;
+import com.pku.properties.JwtProperties;
 import com.pku.service.*;
+import com.pku.utils.JwtUtil;
 import com.pku.utils.RedisUtil;
 import com.pku.pojo.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +37,20 @@ public class SeckillController {
     private SeckillGoodsService seckillGoodsService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private JwtProperties jwtProperties;
     /**
      * 使用redis+消息队列进行秒杀实现
-     * @param userId
+     * @param token
      * @param goodsId
      * @return
      */
     @RequestMapping("/sec")
     @ResponseBody
-    public ResponseEntity<?> sec(@RequestParam(value = "userId") Long userId, @RequestParam(value = "goodsId") Long goodsId) {
+    public ResponseEntity<?> sec(@RequestHeader("token") String token, @RequestParam(value = "goodsId") Long goodsId) {
+        Jws<Claims> jws = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), token);
+        Claims claims = jws.getPayload();
+        Long userId = claims.get("userId", Long.class);
         log.info("参加秒杀的用户id是：{}，秒杀的商品id是：{}", userId, goodsId);
         String message = null;
         //检查库存

@@ -1,17 +1,27 @@
 package com.pku.controller.AdminController;
 
+import com.pku.pojo.dto.UserDTO;
 import com.pku.pojo.entity.SeckillGoods;
+import com.pku.properties.JwtProperties;
 import com.pku.service.RedisService;
 import com.pku.service.SeckillGoodsService;
 import com.pku.service.UserService;
+import com.pku.utils.JwtUtil;
+import com.pku.utils.RSAUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @Slf4j
-@RequestMapping("/user/admin")
+@RequestMapping("/admin/admin")
 public class AdminController {
     @Autowired
     private SeckillGoodsService seckillGoodsService;
@@ -22,8 +32,37 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
+        try{
+            String decryptedPassword = RSAUtil.decrypt(userDTO.getPassword());
+            log.info("decryptedPassword: " + decryptedPassword);
+            userDTO.setPassword(decryptedPassword);
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("登录密码解密失败");
+        }
+        userDTO.setAdminLogin(true);
+        Long status = userService.loginUser(userDTO);
+        if(status == -1) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("用户名或密码不能为空");
+        if(status == -2) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("用户不存在");
+        if(status == -3) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("密码错误");
+        if(status == -4) return ResponseEntity.badRequest().body("非管理用户");
+        //登录成功时，status即为userid，将其制作成token发送给前端
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("adminId", status);
+        String token = JwtUtil.createJWT(jwtProperties.getAdminSecretKey(), jwtProperties.getAdminTtl(), claims);
+        return ResponseEntity.ok(token);
+    }
+
     @PostMapping("/create")
-    public ResponseEntity<?> createSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestParam Long userId) {
+    public ResponseEntity<?> createSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestHeader String token) {
+        Jws<Claims> jws = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
+        Claims claims = jws.getPayload();
+        Long userId = claims.get("adminId", Long.class);
         if(!userService.isAdmin(userId)) {
             return ResponseEntity.badRequest().body("该用户无权限访问");
         }
@@ -33,7 +72,10 @@ public class AdminController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestParam Long userId) {
+    public ResponseEntity<?> updateSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestHeader("token") String token) {
+        Jws<Claims> jws = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
+        Claims claims = jws.getPayload();
+        Long userId = claims.get("adminId", Long.class);
         if(!userService.isAdmin(userId)) {
             return ResponseEntity.badRequest().body("该用户无权限访问");
         }
@@ -43,7 +85,10 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestParam Long userId) {
+    public ResponseEntity<?> deleteSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestHeader String token) {
+        Jws<Claims> jws = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
+        Claims claims = jws.getPayload();
+        Long userId = claims.get("adminId", Long.class);
         if(!userService.isAdmin(userId)) {
             return ResponseEntity.badRequest().body("该用户无权限访问");
         }
