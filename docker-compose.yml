@@ -15,15 +15,31 @@ services:
     volumes:
       - mysql:/var/lib/mysql/
       - ./sql/wh_seckill.sql:/docker-entrypoint-initdb.d/wh_seckill.sql:ro
-#
-#  redis:
-#    container_name: ssadmin-redis
-#    image: redis:6-alpine
-#    restart: unless-stopped
-#    ports:
-#      - "6379:6379"
-#    volumes:
-#      - redis:/data
+
+  redis:
+   container_name: ssadmin-redis
+   privileged: true
+   image: redis:7-alpine
+   restart: unless-stopped
+   ports:
+     - "6379:6379"
+   volumes:
+     - redis:/data
+
+  rabbitmq:
+    container_name: seckill-rabbitmq
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    image: rabbitmq:4.0.5-alpine
+    volumes:
+      - ./data:/var/lib/rabbitmq
+      - ./conf:/etc/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=123456
 
   server:
     container_name: seckill-server
@@ -46,10 +62,13 @@ services:
         --spring.datasource.url=${DATASOURCE_URL:-jdbc:mysql://seckill-mysql:3306/wh_seckill?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true}
         --spring.datasource.username=${DATASOURCE_USERNAME:-root}
         --spring.datasource.password=${DATASOURCE_PASSWORD:-123456}
-#        --spring.redis.host=${REDIS_HOST:-ssadmin-redis}
+        --spring.data.redis.host=${REDIS_HOST:-ssadmin-redis}
+        --spring.rabbitmq.host=${RABBITMQ_HOST:-rabbitmq}
     depends_on:
       - mysql
-#      - redis
+      - redis
+      - rabbitmq
+
 
   web:
     container_name: seckill-web
@@ -70,5 +89,7 @@ services:
 volumes:
   mysql:
     driver: local
-#  redis:
-#    driver: local
+  redis:
+    driver: local
+  rabbitmq:
+    driver: local

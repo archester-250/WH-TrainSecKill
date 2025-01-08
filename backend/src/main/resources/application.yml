@@ -10,8 +10,8 @@ spring:
   profiles:
     active: dev
   rabbitmq:
-    username: ${seckill.spring.rabbitmq.username}
-    password: ${seckill.spring.rabbitmq.password}
+    username: root
+    password: 123456
     virtual-host: /
     host: 127.0.0.1
     port: 5672
@@ -19,7 +19,6 @@ spring:
     redis:
       port: 6379
       host: 127.0.0.1
-      password: ${seckill.spring.redis.password}
 
 logging:
   level:

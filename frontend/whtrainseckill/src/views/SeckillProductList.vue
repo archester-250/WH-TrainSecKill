@@ -4,16 +4,16 @@
         <el-row :gutter="20">
             <el-col :span="6" v-for="product in seckillProducts" :key="product.id">
                 <el-card :body-style="{ padding: '10px' }" class="product-card">
-                    <img v-lazy="product.img" class="product-image" />
+                    <!-- <img v-lazy="product.img" class="product-image" /> -->
                     <div class="product-info">
                         <h3 class="product-name">{{ product.name }}</h3>
                         <p>秒杀价：<span class="seckill-price">￥{{ product.seckillPrice }}</span></p>
-                        <p>库存：<span>{{ product.stock }}</span></p>
-                        <p>倒计时：<span>{{ getCountdown(product.startTime, product.endTime) }}</span></p>
+                        <p>库存：<span>{{ product.stockCount }}</span></p>
+                        <p>倒计时：<span>{{ getCountdown(product.startDate, product.endDate) }}</span></p>
                         <el-button type="danger"
-                            :disabled="!isSeckillAvailable(product.startTime, product.endTime) || buttonLoading[product.id]"
+                            :disabled="!isSeckillAvailable(product.startDate, product.endDate) || buttonLoading[product.id]"
                             :loading="buttonLoading[product.id]" @click="handlePurchase(product.id)">
-                            {{ isSeckillAvailable(product.startTime, product.endTime) ? '立即抢购' : '未开始' }}
+                            {{ isSeckillAvailable(product.startDate, product.endDate) ? '立即抢购' : '未开始' }}
                         </el-button>
                     </div>
                 </el-card>
@@ -45,7 +45,7 @@ export default {
         // 获取秒杀商品数据
         fetchSeckillProducts() {
             this.$axios
-                .get('/api/seckill/products')
+                .get('/api//user/seckill/secGoods')
                 .then((response) => {
                     if (response.status === 200) {
                         this.seckillProducts = response.data;
@@ -59,10 +59,10 @@ export default {
                 });
         },
         // 获取倒计时
-        getCountdown(startTime, endTime) {
+        getCountdown(startDate, endDate) {
             const now = new Date().getTime();
-            const startDiff = startTime - now;
-            const endDiff = endTime - now;
+            const startDiff = startDate - now;
+            const endDiff = endDate - now;
 
             if (startDiff > 0) {
                 return this.formatTime(startDiff); // 未开始
@@ -81,9 +81,9 @@ export default {
             return `${days > 0 ? days + '天 ' : ''}${hours}小时 ${minutes}分钟 ${seconds}秒`;
         },
         // 判断秒杀是否可用
-        isSeckillAvailable(startTime, endTime) {
+        isSeckillAvailable(startDate, endDate) {
             const now = new Date().getTime();
-            return now >= startTime && now <= endTime;
+            return now >= startDate && now <= endDate;
         },
         // 更新倒计时定时器
         startCountdownUpdate() {

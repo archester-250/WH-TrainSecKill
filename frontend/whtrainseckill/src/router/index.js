@@ -54,10 +54,5 @@ export default new Router({
       name: 'AdminLogin',
       component: AdminLogin,
     }
-    // {
-    //   path: '/order/:id',
-    //   name: 'OrderDetail',
-    //   component: OrderDetail, // 订单详情页面
-    // },
   ]
 });
