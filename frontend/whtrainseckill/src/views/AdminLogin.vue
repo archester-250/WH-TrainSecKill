@@ -54,6 +54,7 @@ export default {
                             if (token) {
                                 // 存储 token 到 localStorage
                                 localStorage.setItem('authToken', token);
+                                console.log(token);
 
                                 // 提示用户登录成功
                                 this.$message.success('登录成功！');
