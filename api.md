@@ -426,13 +426,42 @@ ResponseEntity.ok(categories);
 `AdminController` 是一个用于管理秒杀活动的RESTful API控制器，提供了创建、更新和删除秒杀活动的功能。它通过与 `SeckillGoodsService`、`RedisService` 和 `UserService` 进行交互来实现这些功能。
 
 ## 基础信息
-- **Base URL**: `/user/admin`
+- **Base URL**: `/admin/admin`
 - **认证**: 需要管理员权限
 
 ## API接口
 
+### 管理员登录
+一、接口基本信息
+- **接口名称**：管理员登录接口
+- **接口地址**：`/login`（假设此接口所在的基础路径为项目的根路径，若有不同的基础路径需按照实际情况补充完整）
+- **请求方式**：POST
+  - ResponseEntity.status(HttpStatus.BAD_REQUEST).body("注册密码解密失败");
+  - ResponseEntity.status(HttpStatus.BAD_REQUEST).body("用户名或密码不能为空");
+  - ResponseEntity.status(HttpStatus.BAD_REQUEST).body("用户不存在");
+  - ResponseEntity.status(HttpStatus.BAD_REQUEST).body("密码错误");
+  - ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("非管理用户");
+  - ResponseEntity.ok(token);
+------------
+- 请求格式
+```json
+{
+  "username" : "test",
+  "password" : "B2snWkw9S768FHOtOLY0iU8owSaSAydjCr18qcFTA2lgDIFlo6fIyfeOlKkdTYnzAByCpaE5HDlKByUNeIObWQ=="
+}
+```
+-响应成功格式
+```json
+{	"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjMsImlzcyI6ImFyY2hlc3Rlci0yNTAiLCJpYXQiOjE3MzI0NjI5NzQsImV4cCI6MTczMjQ2NDk3NH0.cEJj_q-grUfBHAQuBLFWUaNaBShiCDAPBl_BzV5bUiM"
+}
+```
+
+------------
+
+
+
 ### 创建秒杀活动
-- **URL**: `/create?userId=2`
+- **URL**: `/create`
 - **方法**: `POST`
 - **请求参数**:
   - `seckillGoods` (JSON, body): 秒杀商品信息
@@ -445,7 +474,6 @@ ResponseEntity.ok(categories);
           "endTime": "2025-01-01T23:59:59"
       }
       ```
-  - `userId` (Long, query): 用户ID
 - **返回值**:
   - `200 OK`: 创建成功，返回创建状态
       ```json
@@ -461,7 +489,7 @@ ResponseEntity.ok(categories);
       ```
 
 ### 更新秒杀活动
-- **URL**: `/update?userId=2`
+- **URL**: `/update`
 - **方法**: `PUT`
 - **请求参数**:
   - `seckillGoods` (JSON, body): 秒杀商品信息，部分/全部都可
@@ -492,7 +520,7 @@ ResponseEntity.ok(categories);
   - `404 Not Found`: 秒杀商品未找到
 
 ### 删除秒杀活动
-- **URL**: `/delete?userId=2`
+- **URL**: `/delete`
 - **方法**: `DELETE`
 - **请求参数**:
   - `seckillGoods` (JSON, body): 秒杀商品信息
@@ -533,10 +561,9 @@ ResponseEntity.ok(categories);
 ## API接口
 
 ### 秒杀操作
-- **URL**: `/sec?userId=1&goodsId=1`
+- **URL**: `/sec?goodsId=1`
 - **方法**: `GET`
 - **请求参数**:
-  - `userId` (Long, query): 用户ID
   - `goodsId` (Long, query): 商品ID
 - **返回值**:
   - `200 OK`: 秒杀成功
