@@ -152,7 +152,6 @@ export default {
                 startTime: this.form.startTime,
                 endTime: this.form.endTime
             };
-
             if (this.isEditMode) {
                 // 编辑
                 payload.id = this.form.id;  // 需要传递 id 进行更新
