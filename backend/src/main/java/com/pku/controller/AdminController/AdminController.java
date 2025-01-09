@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.HTML;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class AdminController {
         if(status == -1) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("用户名或密码不能为空");
         if(status == -2) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("用户不存在");
         if(status == -3) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("密码错误");
-        if(status == -4) return ResponseEntity.badRequest().body("非管理用户");
+        if(status == -4) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("非管理用户");
         //登录成功时，status即为userid，将其制作成token发送给前端
         Map<String, Object> claims = new HashMap<>();
         claims.put("adminId", status);
@@ -60,11 +61,9 @@ public class AdminController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestHeader String token) {
-        Jws<Claims> jws = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-        Claims claims = jws.getPayload();
-        Long userId = claims.get("adminId", Long.class);
-        if(!userService.isAdmin(userId)) {
-            return ResponseEntity.badRequest().body("该用户无权限访问");
+        Long userId = JwtUtil.validateJWT(jwtProperties.getAdminSecretKey(), token);
+        if(userId == -1 || !userService.isAdmin(userId)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("该用户无权限访问");
         }
         Long status = seckillGoodsService.createSeckillGoods(seckillGoods);
         redisService.putGoods(seckillGoods.getGoodsId(), seckillGoods);
@@ -73,11 +72,9 @@ public class AdminController {
 
     @PutMapping("/update")
     public ResponseEntity<?> updateSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestHeader("token") String token) {
-        Jws<Claims> jws = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-        Claims claims = jws.getPayload();
-        Long userId = claims.get("adminId", Long.class);
-        if(!userService.isAdmin(userId)) {
-            return ResponseEntity.badRequest().body("该用户无权限访问");
+        Long userId = JwtUtil.validateJWT(jwtProperties.getAdminSecretKey(), token);
+        if(userId == -1 || !userService.isAdmin(userId)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("该用户无权限访问");
         }
         Long status = seckillGoodsService.updateSeckillGoods(seckillGoods);
         redisService.putGoods(seckillGoods.getGoodsId(), seckillGoods.getStockCount());
@@ -86,11 +83,9 @@ public class AdminController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestHeader String token) {
-        Jws<Claims> jws = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-        Claims claims = jws.getPayload();
-        Long userId = claims.get("adminId", Long.class);
-        if(!userService.isAdmin(userId)) {
-            return ResponseEntity.badRequest().body("该用户无权限访问");
+        Long userId = JwtUtil.validateJWT(jwtProperties.getAdminSecretKey(), token);
+        if(userId == -1 || !userService.isAdmin(userId)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("该用户无权限访问");
         }
         seckillGoodsService.deleteSeckillGoods(seckillGoods.getId());
         redisService.delGoods(seckillGoods.getGoodsId());

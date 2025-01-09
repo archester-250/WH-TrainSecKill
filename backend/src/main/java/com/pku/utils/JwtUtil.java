@@ -1,9 +1,11 @@
 package com.pku.utils;
 
+import com.pku.properties.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.Map;
@@ -17,6 +19,7 @@ public class JwtUtil {
      * @param ttlMillis jwt过期时间(毫秒)
      * @param claims    设置的信息
      */
+
     public static String createJWT(String secretKey, long ttlMillis, Map<String, Object> claims) {
         // 签发时间
         long nowMillis = System.currentTimeMillis();
@@ -43,6 +46,16 @@ public class JwtUtil {
                 .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .build()
                 .parseSignedClaims(token);
+    }
+
+    public static Long validateJWT(String secretKey, String token) {
+        try{
+            Jws<Claims> jws = JwtUtil.parseJWT(secretKey, token);
+            Claims claims = jws.getPayload();
+            return claims.get("adminId", Long.class);
+        } catch (Exception e) {
+            return (long) -1;
+        }
     }
 
 }

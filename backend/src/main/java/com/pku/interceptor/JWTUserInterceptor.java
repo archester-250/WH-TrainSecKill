@@ -25,28 +25,21 @@ public class JWTUserInterceptor implements HandlerInterceptor {
         if(!(handler instanceof HandlerMethod)){return true;}
         String token = request.getHeader("token");
         log.info("token: " + token);
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        String controllerName = handlerMethod.getBean().getClass().getSimpleName();
-        if(controllerName.endsWith("AdminController")){
+        try{
+            Jws<Claims> claimsJws = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
+            int userId = (Integer)claimsJws.getPayload().get(JwtClaimsConstant.ADMIN_ID);
+            log.info("adminId: " + userId);
+            BaseContext.setCurrentId(userId);
+        }catch (Exception e){
             try {
-                Jws<Claims> claimsJws = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-                int userId = (Integer)claimsJws.getPayload().get(JwtClaimsConstant.ADMIN_ID);
-                log.info("adminId: " + userId);
+                Jws<Claims> claimsJws = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), token);
+                int userId = (Integer)claimsJws.getPayload().get(JwtClaimsConstant.USER_ID);
+                log.info("userId: " + userId);
                 BaseContext.setCurrentId(userId);
-            } catch (Exception e) {
+            } catch (Exception e1) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return false;
             }
-            return true;
-        }
-        try {
-            Jws<Claims> claimsJws = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), token);
-            int userId = (Integer)claimsJws.getPayload().get(JwtClaimsConstant.USER_ID);
-            log.info("userId: " + userId);
-            BaseContext.setCurrentId(userId);
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return false;
         }
         return true;
     }

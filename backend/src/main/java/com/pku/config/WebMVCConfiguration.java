@@ -24,7 +24,6 @@ public class WebMVCConfiguration extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/user/user/register", "/user/user/login", "/user/user/info", "/public-key", "/user/seckill/sec",
                         "/admin/admin/login");
     }
-    //"/user/seckill/sec"
     @Override
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
