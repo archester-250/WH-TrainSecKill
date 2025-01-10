@@ -72,6 +72,7 @@ public class AdminController {
 
     @PutMapping("/update")
     public ResponseEntity<?> updateSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestHeader("token") String token) {
+        log.info("seckillGoods: " + seckillGoods);
         Long userId = JwtUtil.validateJWT(jwtProperties.getAdminSecretKey(), token);
         if(userId == -1 || !userService.isAdmin(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("该用户无权限访问");
@@ -81,7 +82,7 @@ public class AdminController {
         return status == 0 ? ResponseEntity.notFound().build() : ResponseEntity.ok("更新成功");
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public ResponseEntity<?> deleteSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestHeader String token) {
         Long userId = JwtUtil.validateJWT(jwtProperties.getAdminSecretKey(), token);
         if(userId == -1 || !userService.isAdmin(userId)) {

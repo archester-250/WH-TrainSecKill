@@ -43,10 +43,10 @@
                     <el-input v-model="form.stockCount"></el-input>
                 </el-form-item>
                 <el-form-item label="开始时间">
-                    <el-date-picker v-model="form.startTime" type="datetime" placeholder="选择开始时间" format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                    <el-date-picker v-model="form.startDate" type="datetime" placeholder="选择开始时间" format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="结束时间">
-                    <el-date-picker v-model="form.endTime" type="datetime" placeholder="选择结束时间" format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                    <el-date-picker v-model="form.endDate" type="datetime" placeholder="选择结束时间" format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -67,8 +67,8 @@ export default {
                 goodsId: 0,
                 seckillPrice: null,
                 stockCount: 0,
-                startTime: '',
-                endTime: ''
+                startDate: '',
+                endDate: ''
             },
             dialogVisible: false, // 控制弹窗显示
             isEditMode: false, // 标志是否是编辑模式
@@ -108,8 +108,8 @@ export default {
                 goodsId: '',
                 seckillPrice: '',
                 stockCount: '',
-                startTime: '',
-                endTime: ''
+                startDate: '',
+                endDate: ''
             };
             this.dialogVisible = true;
         },
@@ -117,7 +117,7 @@ export default {
         // 打开编辑弹窗
         handleEdit(row) {
             this.isEditMode = true;
-            this.form = { ...row, startTime: this.convertToDate(row.startDate), endTime: this.convertToDate(row.endDate) };
+            this.form = { ...row, startDate: this.convertToDate(row.startDate), endDate: this.convertToDate(row.endDate) };
             this.dialogVisible = true;
         },
 
@@ -127,11 +127,11 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.$axios
-                    .delete('/api/admin/admin/delete', { data: { id } })  // 向后端发送删除请求
+                    .post('/api/admin/admin/delete', {id})  // 向后端发送删除请求
                     .then((response) => {
                         if (response.status === 200) {
-                            this.seckillGoodsList = this.seckillGoodsList.filter(item => item.id !== id);
                             this.$message.success('删除成功');
+                            this.fetchSeckillGoods();
                         } else {
                             this.$message.error(response.data.message);
                         }
@@ -149,22 +149,23 @@ export default {
                 goodsId: this.form.goodsId,
                 seckillPrice: parseFloat(this.form.seckillPrice),
                 stockCount: this.form.stockCount,
-                startTime: this.form.startTime,
-                endTime: this.form.endTime
+                startDate: new Date(this.form.startDate).toISOString(),
+                endDate: new Date(this.form.endDate).toISOString(),
             };
             if (this.isEditMode) {
                 // 编辑
                 payload.id = this.form.id;  // 需要传递 id 进行更新
 
                 this.$axios
-                    .put('/api/admin/admin/update', { seckillGoods: payload })  // 更新秒杀商品
+                    .put('/api/admin/admin/update', payload)  // 更新秒杀商品
                     .then((response) => {
                         if (response.status === 200) {
                             const index = this.seckillGoodsList.findIndex(item => item.id === this.form.id);
                             if (index !== -1) {
-                                this.seckillGoodsList[index] = { ...this.form, startDate: this.form.startTime, endDate: this.form.endTime };
+                                this.seckillGoodsList[index] = { ...this.form, startDate: this.form.startDate, endDate: this.form.endDate };
                             }
                             this.$message.success('更新成功');
+                            this.fetchSeckillGoods();
                             this.dialogVisible = false;
                         } else {
                             this.$message.error(response.data.message);
@@ -178,16 +179,17 @@ export default {
             } else {
                 // 新增
                 this.$axios
-                    .post('/api/admin/admin/create', { seckillGoods: payload })  // 创建秒杀商品
+                    .post('/api/admin/admin/create', payload)  // 创建秒杀商品
                     .then((response) => {
                         if (response.status === 200) {
                             this.form.id = response.data.message.split('：')[1]; // 假设返回消息包含创建的ID
                             this.seckillGoodsList.push({
                                 ...this.form,
-                                startDate: this.form.startTime,
-                                endDate: this.form.endTime
+                                startDate: this.form.startDate,
+                                endDate: this.form.endDate
                             });
                             this.$message.success('创建成功');
+                            this.fetchSeckillGoods();
                             this.dialogVisible = false;
                         } else {
                             this.$message.error(response.data.message);
