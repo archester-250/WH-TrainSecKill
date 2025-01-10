@@ -66,7 +66,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("该用户无权限访问");
         }
         Long status = seckillGoodsService.createSeckillGoods(seckillGoods);
-        redisService.putGoods(seckillGoods.getGoodsId(), seckillGoods);
+        redisService.putGoods(seckillGoods.getGoodsId(), seckillGoods.getStockCount());
         return ResponseEntity.ok("创建成功："+status);
     }
 

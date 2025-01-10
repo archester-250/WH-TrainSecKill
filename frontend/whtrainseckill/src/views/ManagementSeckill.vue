@@ -182,7 +182,7 @@ export default {
                     .post('/api/admin/admin/create', payload)  // 创建秒杀商品
                     .then((response) => {
                         if (response.status === 200) {
-                            this.form.id = response.data.message.split('：')[1]; // 假设返回消息包含创建的ID
+                            this.form.id = response.data.split('：')[1]; // 假设返回消息包含创建的ID
                             this.seckillGoodsList.push({
                                 ...this.form,
                                 startDate: this.form.startDate,
