@@ -493,7 +493,7 @@ ResponseEntity.ok(categories);
 
 ### 更新秒杀活动
 - **URL**: `/update`
-- **方法**: `PUT`
+- **方法**: `POST`
 - **请求参数**:
   
   - `seckillGoods` (JSON, body): 秒杀商品信息，部分/全部都可
@@ -621,3 +621,161 @@ ResponseEntity.ok(categories);
       ```
 - **描述**:
   - 返回所有可用的秒杀商品信息.
+
+
+  
+## 购物车接口
+
+### 1. 添加商品到购物车接口
+
+- **接口路径**：`/cart/add`
+- **请求方式**：`POST`
+- **接口描述**：用于将指定商品添加到指定用户的购物车中，根据商品 ID 和添加数量来更新购物车信息。
+- 请求参数：
+  - 查询参数：
+    - `productId`（Long）：要添加到购物车的商品的唯一标识。
+    - `quantity`（Integer）：添加商品的数量，必须为正整数。
+- **响应数据**：无（成功返回状态码`200 OK`）
+- **示例请求**：
+
+```bash
+POST https://example.com/cart/123/add?productId=456&quantity=2
+```
+
+- **示例响应**：
+
+```json
+{
+    "status": "success",
+    "message": "商品已成功添加到购物车"
+}
+```
+
+### 2. 从购物车中删除商品接口
+
+- **接口路径**：`/cart/remove`
+- **请求方式**：`DELETE`
+- **接口描述**：根据用户 ID 和商品 ID，从指定用户的购物车中删除对应的商品。
+- 请求参数：
+  - 查询参数：
+    - `productId`（Long）：要从购物车中删除的商品的唯一标识。
+- **响应数据**：无（成功返回状态码`200 OK`）
+- **示例请求**：
+
+```bash
+DELETE https://example.com/cart/123/remove?productId=456
+```
+
+- **示例响应**：
+
+```json
+{
+    "status": "success",
+    "message": "商品已成功从购物车中删除"
+}
+```
+
+### 3. 查询购物车详情接口
+
+- **接口路径**：`/cart`
+
+- **请求方式**：`GET`
+
+- **接口描述**：获取指定用户购物车中的商品列表以及相关信息，如商品名称、价格、数量等。
+
+- 请求参数：
+
+- 响应数据：
+
+  - ```
+    Cart
+    ```
+
+    （对象）：购物车信息对象，包含以下属性：
+
+    - `userId`（String）：用户的唯一标识，与请求参数中的`userId`对应。
+
+    - ```
+      cartItems
+      ```
+
+      （数组）：购物车中的商品项列表，每个元素包含以下属性：
+
+      - `productId`（Long）：商品的唯一标识。
+      - `productName`（String）：商品的名称。
+      - `price`（BigDecimal）：商品的单价。
+      - `quantity`（Integer）：商品在购物车中的数量。
+
+- **示例请求**：
+
+```bash
+GET https://example.com/cart/123
+```
+
+- **示例响应**：
+
+```json
+{
+    "cartItems": [
+        {
+            "productId": 456,
+            "productName": "商品A",
+            "price": 19.99,
+            "quantity": 2
+        },
+        {
+            "productId": 789,
+            "productName": "商品B",
+            "price": 29.99,
+            "quantity": 1
+        }
+    ]
+}
+```
+
+### 4. 修改购物车中商品的数量接口
+
+- **接口路径**：`/cart/update`
+- **请求方式**：`PUT`
+- **接口描述**：根据用户 ID 和商品 ID，修改指定用户购物车中商品的数量。
+- 请求参数：
+  - 查询参数：
+    - `productId`（Long）：要修改数量的商品的唯一标识。
+    - `newQuantity`（Integer）：商品的新数量，必须为正整数。
+- **响应数据**：无（成功返回状态码`200 OK`）
+- **示例请求**：
+
+```bash
+PUT https://example.com/cart/123/update?productId=456&newQuantity=3
+```
+
+- **示例响应**：
+
+```json
+{
+    "status": "success",
+    "message": "购物车中商品数量已成功更新"
+}
+```
+
+### 5. 结算接口
+
+- **接口路径**：`/cart/checkout`
+- **请求方式**：`POST`
+- **接口描述**：对指定用户购物车中的商品进行结算，会扣减对应商品的库存，并返回本次购物的总金额。
+- 响应数据：
+  - `totalPrice`（BigDecimal）：本次购物结算的总金额，包含商品总价以及可能的运费等（本示例暂只考虑商品总价，运费等可按需添加逻辑）。
+- **示例请求**：
+
+```bash
+POST https://example.com/cart/123/checkout
+```
+
+- **示例响应**：
+
+```json
+{
+    "totalPrice": 79.97
+}
+```
+
