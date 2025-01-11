@@ -26,7 +26,7 @@ public class MQGoodsServiceImpl implements MQGoodsService {
      */
     @Override
     @RabbitListener(queues = MyRabbitMQConfig.STORY_QUEUE)
-    public void decrByStock(Long goodsId) {
+    public void decrByStock(Long goodsId, Integer quantity) {
         log.info("库存消息队列收到的消息商品id是：{}", goodsId);
         /**
          * 调用数据库service给数据库对应商品库存减一
@@ -35,7 +35,7 @@ public class MQGoodsServiceImpl implements MQGoodsService {
             List<SeckillGoods> seckillGoods = seckillGoodsMapper.selectGoodstById(goodsId);
             if (!CollectionUtils.isEmpty(seckillGoods)) {
                 SeckillGoods seckillGood = seckillGoods.get(0);
-                seckillGood.setStockCount(seckillGood.getStockCount() - 1);
+                seckillGood.setStockCount(seckillGood.getStockCount() - quantity);
                 seckillGoodsMapper.updateSeckillGoods(seckillGood);
             }
         }

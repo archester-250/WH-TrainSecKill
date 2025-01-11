@@ -70,7 +70,7 @@ public class AdminController {
         return ResponseEntity.ok("创建成功："+status);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public ResponseEntity<?> updateSeckillActivity(@RequestBody SeckillGoods seckillGoods, @RequestHeader("token") String token) {
         log.info("seckillGoods: " + seckillGoods);
         Long userId = JwtUtil.validateJWT(jwtProperties.getAdminSecretKey(), token);
