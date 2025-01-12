@@ -7,12 +7,12 @@
         </div>
         <!-- 购物车商品列表 -->
         <el-table v-if="cartItems.length > 0" :data="cartItems" stripe>
-            <el-table-column label="商品图片" width="120">
+            <!-- <el-table-column label="商品图片" width="120">
                 <template #default="{ row }">
                     <img :src="row.img" class="cart-item-image" />
                 </template>
-            </el-table-column>
-            <el-table-column label="商品名称" prop="name" />
+            </el-table-column> -->
+            <el-table-column label="商品名称" prop="productName" />
             <el-table-column label="单价" prop="price" />
             <el-table-column label="数量">
                 <template #default="{ row }">
@@ -78,7 +78,7 @@ export default {
                 });
         },
         updateCart(productId, quantity) {
-            this.$axios.put(`/api/user/cart/update`, { productId, quantity })
+            this.$axios.put(`/api/user/cart/update?productId=${productId}&newQuantity=${quantity}`)
                 .then(response => {
                     if (response.status === 200) {
                         this.$message.success("购物车已更新");
@@ -93,7 +93,7 @@ export default {
                 });
         },
         removeFromCart(productId) {
-            this.$axios.delete(`/api/user/cart/remove/${productId}`)
+            this.$axios.delete(`/api/user/cart/remove?productId=${productId}`)
                 .then(response => {
                     if (response.status === 200) {
                         this.$message.success("商品已移出购物车");

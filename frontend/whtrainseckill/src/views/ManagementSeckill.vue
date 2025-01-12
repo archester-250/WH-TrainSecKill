@@ -157,7 +157,7 @@ export default {
                 payload.id = this.form.id;  // 需要传递 id 进行更新
 
                 this.$axios
-                    .put('/api/admin/admin/update', payload)  // 更新秒杀商品
+                    .post('/api/admin/admin/update', payload)  // 更新秒杀商品
                     .then((response) => {
                         if (response.status === 200) {
                             const index = this.seckillGoodsList.findIndex(item => item.id === this.form.id);

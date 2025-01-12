@@ -82,7 +82,7 @@ export default {
         goodsId: productId,
         goodsCount: 1, // 默认为1
       };
-      this.$axios.post('/api/user/cart/add', submitData)
+      this.$axios.post(`/api/user/cart/add?productId=${submitData.goodsId}&quantity=${submitData.goodsCount}`)
         .then(response => {
           if (response.status === 200) {
             this.$message.success('已加入购物车');
