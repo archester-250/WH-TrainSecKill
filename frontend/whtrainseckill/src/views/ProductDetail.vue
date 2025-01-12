@@ -11,21 +11,10 @@
     <div class="product-info">
       <!-- 左侧图片展示 -->
       <div class="product-images">
-        <el-image
-          :src="mainImage"
-          :preview-src-list="imageList"
-          fit="cover"
-          class="main-image"
-        ></el-image>
+        <el-image :src="mainImage" :preview-src-list="imageList" fit="cover" class="main-image"></el-image>
         <div class="thumbnail-list">
-          <el-image
-            v-for="(img, index) in imageList"
-            :key="index"
-            :src="img"
-            fit="cover"
-            class="thumbnail-image"
-            @click="changeMainImage(img)"
-          ></el-image>
+          <el-image v-for="(img, index) in imageList" :key="index" :src="img" fit="cover" class="thumbnail-image"
+            @click="changeMainImage(img)"></el-image>
         </div>
       </div>
       <!-- 右侧商品信息 -->
@@ -42,12 +31,8 @@
         <!-- 购买数量 -->
         <div class="product-quantity">
           <span>数量：</span>
-          <el-input-number
-            v-model="quantity"
-            :min="1"
-            :max="product.stock"
-            @change="handleQuantityChange"
-          ></el-input-number>
+          <el-input-number v-model="quantity" :min="1" :max="product.stock"
+            @change="handleQuantityChange"></el-input-number>
         </div>
         <!-- 购买按钮 -->
         <div class="purchase-buttons">
@@ -111,8 +96,8 @@ export default {
     },
     buyNow() {
       const submitData = {
-        'goodsId' : this.$data.productId,
-        'goodsCount' : this.$data.quantity
+        'goodsId': this.$data.productId,
+        'goodsCount': this.$data.quantity
       }
       this.$axios.post(`/api/user/order/add`, submitData)
         .then(response => {
@@ -129,9 +114,24 @@ export default {
         });
     },
     addToCart() {
-      // 加入购物车逻辑
-      this.$message.success('加入购物车功能尚未实现');
-    }
+      const submitData = {
+        goodsId: this.productId,
+        goodsCount: this.quantity,
+      };
+      this.$axios.post('/api/user/cart/add', submitData)
+        .then(response => {
+          if (response.status === 200) {
+            this.$message.success('商品已加入购物车');
+          } else {
+            this.$message.error(response.statusText);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          this.$message.error('加入购物车失败');
+        });
+    },
+
   }
 };
 </script>
@@ -140,57 +140,77 @@ export default {
 .product-detail {
   padding: 20px;
 }
+
 .breadcrumb {
   margin-bottom: 20px;
 }
+
 .product-info {
   display: flex;
 }
+
 .product-images {
   width: 400px;
   margin-right: 20px;
 }
+
 .main-image {
   width: 400px;
   height: 400px;
 }
+
 .thumbnail-list {
   display: flex;
   margin-top: 10px;
 }
+
 .thumbnail-image {
   width: 60px;
   height: 60px;
   margin-right: 10px;
   cursor: pointer;
 }
+
 .product-details {
   flex: 1;
 }
+
 .product-name {
   font-size: 24px;
   font-weight: bold;
 }
+
 .product-title {
   font-size: 16px;
   color: #666;
   margin-bottom: 20px;
 }
+
 .product-price {
   font-size: 20px;
   color: red;
   margin-bottom: 10px;
 }
+
 .product-stock {
   margin-bottom: 10px;
 }
+
 .product-quantity {
   margin-bottom: 20px;
 }
+
 .purchase-buttons .el-button {
   margin-right: 20px;
 }
+
 .product-description {
   margin-top: 40px;
 }
+
+.purchase-buttons {
+  display: flex;
+  gap: 10px;
+}
+
 </style>

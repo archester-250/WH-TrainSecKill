@@ -12,7 +12,7 @@
                         <p>倒计时：<span>{{ getCountdown(product.startDate, product.endDate) }}</span></p>
                         <el-button type="danger"
                             :disabled="!isSeckillAvailable(product.startDate, product.endDate) || buttonLoading[product.id]"
-                            :loading="buttonLoading[product.id]" @click="handlePurchase(product.id)">
+                            :loading="buttonLoading[product.goodsId]" @click="handlePurchase(product.goodsId)">
                             {{ isSeckillAvailable(product.startDate, product.endDate) ? '立即抢购' : '不可抢购' }}
                         </el-button>
                     </div>

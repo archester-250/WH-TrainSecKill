@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.pku.properties.JwtProperties;
+import com.pku.utils.JwtUtil;
+import com.pku.context.BaseContext;
 
 @RestController
 @Slf4j
@@ -18,8 +21,12 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
     @PostMapping("/add")
-    public ResponseEntity<?> addOrder(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<?> addOrder(@RequestHeader("token") String token, @RequestBody OrderDTO orderDTO){
+        orderDTO.setUserId(BaseContext.getCurrentId());
         Long status = orderService.addOrder(orderDTO);
         if(status == -1){
             return ResponseEntity.notFound().build();

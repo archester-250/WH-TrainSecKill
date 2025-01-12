@@ -9,6 +9,8 @@ import OrderList from '@/views/OrderList.vue';
 import SeckillProductList from '../views/SeckillProductList.vue';
 import AdminLogin from '../views/AdminLogin.vue';
 import ManagementSeckill from '../views/ManagementSeckill.vue';
+import Cart from '../views/Cart.vue';
+import OrderSuccess from '../views/OrderSuccess.vue';
 
 
 Vue.use(Router);
@@ -59,6 +61,16 @@ export default new Router({
       path: '/management/seckill',
       name: 'ManagementSeckill',
       component: ManagementSeckill,
+    },
+    {
+      path: '/cart',
+      name: 'Cart',
+      component: Cart,
+    },
+    {
+      path: '/order/success',
+      name: 'OrderSuccess',
+      component: OrderSuccess,
     }
   ]
 });
