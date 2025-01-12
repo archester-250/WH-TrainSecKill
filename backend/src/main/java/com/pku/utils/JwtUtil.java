@@ -48,11 +48,11 @@ public class JwtUtil {
                 .parseSignedClaims(token);
     }
 
-    public static Long validateJWT(String secretKey, String token) {
+    public static Long validateJWT(String secretKey, String token, boolean isAdmin) {
         try{
             Jws<Claims> jws = JwtUtil.parseJWT(secretKey, token);
             Claims claims = jws.getPayload();
-            return claims.get("adminId", Long.class);
+            return isAdmin ? claims.get("adminId", Long.class) : claims.get("userId", Long.class);
         } catch (Exception e) {
             return (long) -1;
         }
