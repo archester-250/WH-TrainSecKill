@@ -2,8 +2,10 @@ package com.pku.service.Impl;
 
 import com.pku.pojo.entity.Cart;
 import com.pku.pojo.entity.CartItem;
+import com.pku.pojo.entity.Product;
 import com.pku.service.CartService;
 
+import com.pku.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private ProductService productService;
 
     @Override
     public void addToCart(String userId, Long productId, Integer quantity) {
@@ -40,10 +45,13 @@ public class CartServiceImpl implements CartService {
             CartItem existingItem = existingItemOptional.get();
             existingItem.setQuantity(existingItem.getQuantity() + quantity);
         } else {
+            Product product = productService.findProductById(productId);
             // 假设可以通过ProductService等获取商品详情来填充CartItem信息
             CartItem newItem = new CartItem();
             // 设置商品相关信息，比如名称、价格等（此处省略具体从数据库获取商品详情步骤）
             newItem.setProductId(productId);
+            newItem.setImg(product.getImg());
+            newItem.setPrice(product.getPrice());
             newItem.setQuantity(quantity);
             cartItems.add(newItem);
         }

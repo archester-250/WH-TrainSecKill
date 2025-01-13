@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class CartItem{
     private Long productId;
     private String productName;
+    private String img;
     private BigDecimal price;
     private Integer quantity;
     // 构造函数、Getter和Setter方法等省略
