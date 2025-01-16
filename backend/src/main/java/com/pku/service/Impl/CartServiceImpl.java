@@ -50,6 +50,7 @@ public class CartServiceImpl implements CartService {
             CartItem newItem = new CartItem();
             // 设置商品相关信息，比如名称、价格等（此处省略具体从数据库获取商品详情步骤）
             newItem.setProductId(productId);
+            newItem.setProductName(product.getName());
             newItem.setImg(product.getImg());
             newItem.setPrice(product.getPrice());
             newItem.setQuantity(quantity);
